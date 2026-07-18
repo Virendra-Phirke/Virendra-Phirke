@@ -37,8 +37,6 @@
 <br>
 <br>
 
-<h3><code>virendra@github ~ $ ./stats.sh</code></h3>
-
 ![](https://github-readme-stats.vercel.app/api?username=virendra-phirke&theme=dark&hide_border=true&include_all_commits=true&count_private=false)<br/>
 ![](https://nirzak-streak-stats.vercel.app/?user=virendra-phirke&theme=dark&hide_border=true)<br/>
 ![](https://github-readme-stats.vercel.app/api/top-langs/?username=virendra-phirke&theme=dark&hide_border=true&include_all_commits=true&count_private=false&layout=compact)
@@ -46,14 +44,10 @@
 <br>
 <br>
 
-<h3><code>virendra@github ~ $ ./trophies.sh</code></h3>
-
 ![](https://github-profile-trophy.vercel.app/?username=virendra-phirke&theme=radical&no-frame=false&no-bg=false&margin-w=4)
 
 <br>
 <br>
-
-<h3><code>virendra@github ~ $ ./top_repo.sh</code></h3>
 
 ![](https://github-contributor-stats.vercel.app/api?username=virendra-phirke&limit=5&theme=tokyonight&combine_all_yearly_contributions=true)
 
