@@ -49,8 +49,8 @@ BG = "#0d1117"
 BG2 = "#111722"
 FRAME = "#30363d"
 TITLE_TEXT = "#7d8590"
-INK = "#c9d1d9"      # the single ascii color (matches Andrew6rant)
-CURSOR = "#c9d1d9"
+INK = "#f85149"      # red text
+CURSOR = "#f85149"
 
 # ---- reveal timing (one-shot; a cursor rasters top -> bottom) -------------
 ROW_DUR = 0.11
@@ -65,46 +65,21 @@ im = ImageEnhance.Contrast(im).enhance(CONTRAST)
 im = im.resize((COLS, ROWS), Image.LANCZOS)
 px = im.load()
 
-# Load RGB for colors
-im_rgb = Image.open(SRC).convert("RGB")
-if SHARPEN:
-    im_rgb = im_rgb.filter(ImageFilter.UnsharpMask(radius=2, percent=140, threshold=2))
-im_rgb = ImageEnhance.Brightness(im_rgb).enhance(BRIGHTNESS)
-im_rgb = ImageEnhance.Contrast(im_rgb).enhance(CONTRAST)
-im_rgb = im_rgb.resize((COLS, ROWS), Image.LANCZOS)
-px_rgb = im_rgb.load()
-
 STATIC = bool(os.environ.get("STATIC"))  # emit frozen state for previews
 
 rows_txt = []
 for y in range(ROWS):
-    row_spans = []
-    current_color = None
+    chars = []
     for x in range(COLS):
         lum = px[x, y] / 255.0
         lum = pow(lum, GAMMA)
         if lum >= WHITE_FLOOR:
-            char = " "
-            color = INK
-        else:
-            idx = int((1.0 - lum) * (len(RAMP) - 1) + 0.5)
-            idx = max(0, min(len(RAMP) - 1, idx))
-            char = RAMP[idx]
-            
-            r, g, b = px_rgb[x, y]
-            color = f"#{r:02x}{g:02x}{b:02x}"
-
-        if color != current_color:
-            if current_color is not None:
-                row_spans.append("</tspan>")
-            row_spans.append(f'<tspan fill="{color}">')
-            current_color = color
-        
-        row_spans.append(html.escape(char))
-        
-    if current_color is not None:
-        row_spans.append("</tspan>")
-    rows_txt.append("".join(row_spans))
+            chars.append(" ")
+            continue
+        idx = int((1.0 - lum) * (len(RAMP) - 1) + 0.5)
+        idx = max(0, min(len(RAMP) - 1, idx))
+        chars.append(RAMP[idx])
+    rows_txt.append("".join(chars))
 
 art_top = TITLEBAR_H + PAD * 0.35
 
@@ -130,14 +105,15 @@ for i, dotcol in enumerate(["#ff5f56", "#ffbd2e", "#27c93f"]):
 parts.append(f'<text x="{CANVAS_W/2}" y="{TITLEBAR_H/2 + 4}" fill="{TITLE_TEXT}" font-size="12" '
              f'text-anchor="middle">virendra@github: ~$ ./portrait.sh</text>')
 
-# one <text> per row
+# one <text> per row (single color -> no per-char markup, tiny file)
 font_size = CELL_H * 0.86
-for ry, line_html in enumerate(rows_txt):
+for ry, line in enumerate(rows_txt):
     y = art_top + ry * CELL_H + CELL_H * 0.74
     row_y = art_top + ry * CELL_H
     delay = ry * STAGGER
-    text = (f'<text xml:space="preserve" x="{PAD}" y="{y:.1f}" '
-            f'font-size="{font_size:.1f}" textLength="{ART_W}" lengthAdjust="spacing">{line_html}</text>')
+    safe = html.escape(line)
+    text = (f'<text xml:space="preserve" x="{PAD}" y="{y:.1f}" fill="{INK}" '
+            f'font-size="{font_size:.1f}" textLength="{ART_W}" lengthAdjust="spacing">{safe}</text>')
 
     if STATIC:
         parts.append(text)
