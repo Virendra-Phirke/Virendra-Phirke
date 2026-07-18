@@ -40,7 +40,7 @@
 <table>
 <tr>
 <td valign="top"><a href="https://www.readmecodegen.com/custom-github-card-generator"><img src="https://www.readmecodegen.com/api/github-stats/svg?username=virendra-phirke" alt="GitHub Stats" /></a></td>
-<td valign="top"><a href="https://www.readmecodegen.com/custom-github-card-generator"><img src="https://www.readmecodegen.com/api/github-stats/svg?username=virendra-phirke&cardType=top-langs" alt="GitHub Languages" /></a></td>
+<td valign="top"><a href="https://www.readmecodegen.com/custom-github-card-generator"><img src="https://www.readmecodegen.com/api/github-stats/svg?username=virendra-phirke&cardType=langs" alt="GitHub Languages" /></a></td>
 </tr>
 </table>
 
@@ -51,15 +51,6 @@
 </div>
 
 <br>
-<br>
 
-![](https://github-profile-trophy.vercel.app/?username=virendra-phirke&theme=radical&no-frame=false&no-bg=false&margin-w=4)
-
-<br>
-<br>
-
-![](https://github-contributor-stats.vercel.app/api?username=virendra-phirke&limit=5&theme=tokyonight&combine_all_yearly_contributions=true)
-
-<br>
 
 </div>
