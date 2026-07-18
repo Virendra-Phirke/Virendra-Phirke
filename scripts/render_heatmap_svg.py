@@ -36,10 +36,10 @@ ACCENT = "#22d3ee"
 GREEN = "#39d353"
 GOLD = "#f2cc60"
 
-# reveal timing (one-shot)
-COL_T = 0.018   # per-column delay contribution (left -> right sweep)
-ROW_T = 0.045   # per-row delay contribution (top -> bottom cascade)
-CELL_DUR = 0.42
+# reveal timing (one-shot) - made slower
+COL_T = 0.045   # per-column delay contribution (left -> right sweep)
+ROW_T = 0.090   # per-row delay contribution (top -> bottom cascade)
+CELL_DUR = 0.85
 
 
 def level_for(count):
