@@ -29,15 +29,15 @@ jobs:
       - name: Scrape real contribution data (no auth needed)
         run: python scripts/fetch_contributions.py
 
-      - name: Render animated contribution graph SVG
-        run: |
-          python scripts/render_heatmap_svg.py
-
       - name: Generate bomberman contribution graph SVG
         uses: abozanona/pacman-contribution-graph@main
         with:
           github_user_name: ${{ github.repository_owner }}
           games: 'bomberman'
+
+      - name: Render animated contribution graph SVG
+        run: |
+          python scripts/render_heatmap_svg.py
 
       - name: Commit updated art
         uses: stefanzweifel/git-auto-commit-action@v5

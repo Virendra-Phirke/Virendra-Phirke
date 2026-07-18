@@ -50,14 +50,5 @@
 <a href="https://www.readmecodegen.com/custom-github-card-generator"><img src="https://www.readmecodegen.com/api/github-stats/svg?username=virendra-phirke&cardType=streak" alt="GitHub Streak" /></a>
 </div>
 
-<br>
-
-<div align="center">
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./dist/bomberman-contribution-graph-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="./dist/bomberman-contribution-graph.svg">
-  <img alt="Bomberman Contribution Graph" src="./dist/bomberman-contribution-graph.svg">
-</picture>
-</div>
 
 </div>

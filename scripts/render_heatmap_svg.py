@@ -124,6 +124,9 @@ def render(data):
     grid_top = TITLEBAR_H + TOP_LABEL_H
     grid_left = PAD + LEFT_LABEL_W
 
+    parts.append('<g id="heatmap-view">')
+    parts.append('<animate attributeName="opacity" from="1" to="0" begin="5s" dur="0.5s" fill="freeze" />')
+
     for ci, label in month_labels:
         x = grid_left + ci * STEP
         parts.append(f'<text x="{x}" y="{TITLEBAR_H + 14}" fill="{MUTED}" font-size="10">{label}</text>')
@@ -160,6 +163,22 @@ def render(data):
         parts.append(f'<rect x="{lx}" y="{leg_y}" width="{CELL-1}" height="{CELL-1}" rx="2.2" fill="{color}"/>')
         lx += CELL
     parts.append(f'<text x="{lx + 4}" y="{leg_y + CELL*0.8:.1f}" fill="{MUTED}" font-size="10">More</text>')
+    
+    parts.append('</g>')
+    
+    import re
+    bm_path = os.path.join(HERE, "..", "dist", "bomberman-contribution-graph-dark.svg")
+    if os.path.exists(bm_path):
+        with open(bm_path, "r", encoding="utf-8") as f:
+            bm_content = f.read()
+            match = re.search(r'<svg[^>]*>(.*)</svg>', bm_content, re.DOTALL | re.IGNORECASE)
+            if match:
+                inner_bm = match.group(1)
+                scale = art_w / 1166.0
+                parts.append(f'<g id="bomberman-view" opacity="0" transform="translate({grid_left}, {grid_top + 10}) scale({scale})">')
+                parts.append('<animate attributeName="opacity" from="0" to="1" begin="5s" dur="0.5s" fill="freeze" />')
+                parts.append(inner_bm)
+                parts.append('</g>')
 
     sep_y = leg_y + CELL + 14
     parts.append(f'<line x1="0" y1="{sep_y}" x2="{canvas_w}" y2="{sep_y}" stroke="{FRAME}" stroke-opacity="0.25"/>')
