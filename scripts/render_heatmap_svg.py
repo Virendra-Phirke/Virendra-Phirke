@@ -106,7 +106,18 @@ def render(data):
     parts = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{canvas_w}" height="{canvas_h}" '
         f'viewBox="0 0 {canvas_w} {canvas_h}" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">',
-        f'<style>{css}</style>',
+        f'<style>{css}\n'
+        f'@keyframes fadeOutView {{\n'
+        f'  0%, 90% {{ opacity: 1; }}\n'
+        f'  100% {{ opacity: 0; visibility: hidden; }}\n'
+        f'}}\n'
+        f'@keyframes fadeInView {{\n'
+        f'  0%, 90% {{ opacity: 0; }}\n'
+        f'  100% {{ opacity: 1; visibility: visible; }}\n'
+        f'}}\n'
+        f'#heatmap-view {{ animation: fadeOutView 5.5s forwards; }}\n'
+        f'#bomberman-view {{ animation: fadeInView 5.5s forwards; opacity: 0; }}\n'
+        f'</style>',
         '<defs>'
         f'<linearGradient id="hbg" x1="0" y1="0" x2="0" y2="1">'
         f'<stop offset="0" stop-color="{BG2}"/><stop offset="1" stop-color="{BG}"/></linearGradient>'
@@ -125,7 +136,6 @@ def render(data):
     grid_left = PAD + LEFT_LABEL_W
 
     parts.append('<g id="heatmap-view">')
-    parts.append('<animate attributeName="opacity" from="1" to="0" begin="5s" dur="0.5s" fill="freeze" />')
 
     for ci, label in month_labels:
         x = grid_left + ci * STEP
@@ -175,8 +185,7 @@ def render(data):
             if match:
                 inner_bm = match.group(1)
                 scale = art_w / 1166.0
-                parts.append(f'<g id="bomberman-view" opacity="0" transform="translate({grid_left}, {grid_top + 10}) scale({scale})">')
-                parts.append('<animate attributeName="opacity" from="0" to="1" begin="5s" dur="0.5s" fill="freeze" />')
+                parts.append(f'<g id="bomberman-view" transform="translate({grid_left}, {grid_top + 10}) scale({scale})">')
                 parts.append(inner_bm)
                 parts.append('</g>')
 
