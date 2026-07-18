@@ -39,8 +39,8 @@
 
 <table>
 <tr>
-<td valign="top"><a href="https://www.readmecodegen.com/custom-github-card-generator"><img src="https://www.readmecodegen.com/api/github-stats/svg?username=virendra-phirke" alt="GitHub Stats" /></a></td>
-<td valign="top"><img src="./lang-card.svg" width="460" alt="Virendra's Most Used Languages" /></td>
+<td valign="top"><a href="https://www.readmecodegen.com/custom-github-card-generator"><img src="https://www.readmecodegen.com/api/github-stats/svg?username=virendra-phirke" alt="GitHub Language / Stats" /></a></td>
+<td valign="top"><a href="https://www.readmecodegen.com/custom-github-card-generator"><img src="https://www.readmecodegen.com/api/github-stats/svg?username=virendra-phirke&cardType=streak" alt="GitHub Streak" /></a></td>
 </tr>
 </table>
 

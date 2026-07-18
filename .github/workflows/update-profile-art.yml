@@ -31,8 +31,7 @@ jobs:
 
       - name: Render animated contribution graph SVG
         run: |
-          python scripts/generate_streak_svg.py virendra-phirke contrib-heatmap.svg
-          python scripts/make_lang_card.py virendra-phirke lang-card.svg
+          python scripts/render_heatmap_svg.py
 
       - name: Commit updated art
         uses: stefanzweifel/git-auto-commit-action@v5
