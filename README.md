@@ -18,7 +18,7 @@
 
 <table>
 <tr>
-<td valign="top"><img src="./avi-ascii.svg" width="370" alt="Virendra Phirke — ASCII portrait" /></td>
+<td valign="top"><img src="./avi-ascii.svg?v=1" width="370" alt="Virendra Phirke — ASCII portrait" /></td>
 <td valign="top"><img src="./info-card.svg" width="490" alt="Virendra Phirke — experience, stack, highlights" /></td>
 </tr>
 </table>
