@@ -52,5 +52,12 @@
 
 <br>
 
+<div align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./dist/bomberman-contribution-graph-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="./dist/bomberman-contribution-graph.svg">
+  <img alt="Bomberman Contribution Graph" src="./dist/bomberman-contribution-graph.svg">
+</picture>
+</div>
 
 </div>
