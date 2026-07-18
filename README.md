@@ -37,9 +37,7 @@
 <br>
 <br>
 
-![](https://github-readme-stats.vercel.app/api?username=virendra-phirke&theme=dark&hide_border=true&include_all_commits=true&count_private=false)<br/>
-![](https://nirzak-streak-stats.vercel.app/?user=virendra-phirke&theme=dark&hide_border=true)<br/>
-![](https://github-readme-stats.vercel.app/api/top-langs/?username=virendra-phirke&theme=dark&hide_border=true&include_all_commits=true&count_private=false&layout=compact)
+<img src="./stats-card.svg" width="950" alt="Virendra's GitHub Stats & Most Used Languages" />
 
 <br>
 <br>
