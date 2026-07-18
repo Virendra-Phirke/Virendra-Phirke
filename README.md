@@ -39,10 +39,16 @@
 
 <table>
 <tr>
-<td valign="top"><a href="https://www.readmecodegen.com/custom-github-card-generator"><img src="https://www.readmecodegen.com/api/github-stats/svg?username=virendra-phirke" alt="GitHub Language / Stats" /></a></td>
-<td valign="top"><a href="https://www.readmecodegen.com/custom-github-card-generator"><img src="https://www.readmecodegen.com/api/github-stats/svg?username=virendra-phirke&cardType=streak" alt="GitHub Streak" /></a></td>
+<td valign="top"><a href="https://www.readmecodegen.com/custom-github-card-generator"><img src="https://www.readmecodegen.com/api/github-stats/svg?username=virendra-phirke" alt="GitHub Stats" /></a></td>
+<td valign="top"><a href="https://www.readmecodegen.com/custom-github-card-generator"><img src="https://www.readmecodegen.com/api/github-stats/svg?username=virendra-phirke&cardType=top-langs" alt="GitHub Languages" /></a></td>
 </tr>
 </table>
+
+<br>
+
+<div align="center">
+<a href="https://www.readmecodegen.com/custom-github-card-generator"><img src="https://www.readmecodegen.com/api/github-stats/svg?username=virendra-phirke&cardType=streak" alt="GitHub Streak" /></a>
+</div>
 
 <br>
 <br>
