@@ -18,8 +18,8 @@ import os
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-# defaults to the prepped grayscale image (see prep_photo.py), which already has
-# the background removed + local contrast applied.
+# defaults to the provided png image.
+# We composite it over white if it has a transparent background.
 SRC = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "..", "source-prepped.png")
 OUT = sys.argv[2] if len(sys.argv) > 2 else os.path.join(HERE, "..", "avi-ascii.svg")
 
@@ -35,7 +35,7 @@ CONTRAST = 1.05
 BRIGHTNESS = 1.0
 GAMMA = 1.18          # >1 brightens mids -> face lands in sparser chars
 SHARPEN = False
-WHITE_FLOOR = 0.80    # luminance above this is forced to blank (space)
+WHITE_FLOOR = 0.98    # luminance above this is forced to blank (space)
 
 PAD = 20
 TITLEBAR_H = 30
@@ -57,7 +57,15 @@ ROW_DUR = 0.11
 STAGGER = 0.11       # == ROW_DUR -> a single cursor sweeping down
 
 # ---- 1. sample the image into a COLS x ROWS grayscale grid ----------------
-im = Image.open(SRC).convert("L")               # grayscale
+im = Image.open(SRC)
+if im.mode in ('RGBA', 'LA') or (im.mode == 'P' and 'transparency' in im.info):
+    alpha = im.convert('RGBA').split()[-1]
+    bg = Image.new("RGBA", im.size, (255, 255, 255, 255))
+    bg.paste(im, mask=alpha)
+    im = bg.convert("L")
+else:
+    im = im.convert("L")
+
 if SHARPEN:
     im = im.filter(ImageFilter.UnsharpMask(radius=2, percent=140, threshold=2))
 im = ImageEnhance.Brightness(im).enhance(BRIGHTNESS)
