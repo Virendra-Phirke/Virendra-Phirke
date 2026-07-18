@@ -5,7 +5,7 @@ name: Update profile art
 
 "on":
   schedule:
-    - cron: "30 18 * * *"   # 18:30 UTC -> 12:00 AM IST every day
+    - cron: "0 */6 * * *"   # Run every 6 hours
   workflow_dispatch: {}
   push:
     branches: [main]
@@ -29,13 +29,20 @@ jobs:
       - name: Scrape real contribution data (no auth needed)
         run: python scripts/fetch_contributions.py
 
-      - name: Generate bomberman contribution graph SVG
+      - name: Pick random game
+        id: pick_game
+        run: |
+          python -c "import random, os; game = random.choice(['bomberman', 'minesweeper', 'puzzle-bobble', 'galaga', 'breakout', 'pacman']); print(f'game={game}'); f = open(os.environ['GITHUB_OUTPUT'], 'a'); f.write(f'game={game}\n'); f.close()"
+
+      - name: Generate random game contribution graph SVG
         uses: abozanona/pacman-contribution-graph@main
         with:
           github_user_name: ${{ github.repository_owner }}
-          games: 'bomberman'
+          games: ${{ steps.pick_game.outputs.game }}
 
       - name: Render animated contribution graph SVG
+        env:
+          CHOSEN_GAME: ${{ steps.pick_game.outputs.game }}
         run: |
           python scripts/render_heatmap_svg.py
 

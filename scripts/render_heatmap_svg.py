@@ -177,7 +177,8 @@ def render(data):
     parts.append('</g>')
     
     import re
-    bm_path = os.path.join(HERE, "..", "dist", "bomberman-contribution-graph-dark.svg")
+    game_name = os.environ.get("CHOSEN_GAME", "bomberman")
+    bm_path = os.path.join(HERE, "..", "dist", f"{game_name}-contribution-graph-dark.svg")
     if os.path.exists(bm_path):
         with open(bm_path, "r", encoding="utf-8") as f:
             bm_content = f.read()
