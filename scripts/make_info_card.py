@@ -14,29 +14,23 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "info-card.svg")
 STATIC = bool(os.environ.get("STATIC"))
 
-W, H = 480, 376
+W, H = 480, 400
 PAD = 20
 TITLEBAR_H = 30
 KEY_X = PAD
 VAL_X = PAD + 92
-LINE_H = 20.5
+LINE_H = 23.5
 
 BG = "#0d1117"
 BG2 = "#111722"
 FRAME = "#30363d"
 MUTED = "#7d8590"
-INK = "#c9d1d9"
-KEY = "#ffa657"      # orange keys (matches Andrew)
+INK = "#e6edf3"
+KEY = "#ffa657"      # orange keys
 SECTION = "#58a6ff"  # blue section headers
 GREEN = "#3fb950"
-ACCENT = "#22d3ee"
+ACCENT = "#22d3ee"   # cyan accent
 
-# content model: tuples describing each row
-# ("host",)                    -> "virendra@github" + rule
-# ("kv", key, value)           -> orange key + light value
-# ("sec", title)               -> blue "— title —" rule
-# ("bul", text)                -> green dot + light text
-# ("gap",)                     -> vertical space
 ROWS = [
     ("host",),
     ("kv", "Focus", "Modern & responsive web apps"),
@@ -76,7 +70,14 @@ parts = [
     f'font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">',
     '<defs>'
     f'<linearGradient id="ibg" x1="0" y1="0" x2="0" y2="1">'
-    f'<stop offset="0" stop-color="{BG2}"/><stop offset="1" stop-color="{BG}"/></linearGradient></defs>',
+    f'<stop offset="0" stop-color="{BG2}"/><stop offset="1" stop-color="{BG}"/></linearGradient>'
+    f'<linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">'
+    f'<stop offset="0" stop-color="{SECTION}" stop-opacity="0.8"/>'
+    f'<stop offset="1" stop-color="{FRAME}" stop-opacity="0.1"/></linearGradient>'
+    f'<linearGradient id="hostGrad" x1="0" y1="0" x2="1" y2="0">'
+    f'<stop offset="0" stop-color="{GREEN}" stop-opacity="0.8"/>'
+    f'<stop offset="1" stop-color="{FRAME}" stop-opacity="0.1"/></linearGradient>'
+    '</defs>',
     f'<rect width="{W}" height="{H}" rx="12" fill="url(#ibg)"/>',
     f'<rect x="0.5" y="0.5" width="{W-1}" height="{H-1}" rx="12" fill="none" stroke="{FRAME}"/>',
     f'<line x1="0" y1="{TITLEBAR_H}" x2="{W}" y2="{TITLEBAR_H}" stroke="{FRAME}"/>',
@@ -86,32 +87,41 @@ for i, dotcol in enumerate(["#ff5f56", "#ffbd2e", "#27c93f"]):
 parts.append(f'<text x="{W/2}" y="{TITLEBAR_H/2 + 4}" fill="{MUTED}" font-size="12" '
              f'text-anchor="middle">virendra@github: ~$ neofetch</text>')
 
-y = TITLEBAR_H + 30
+y = TITLEBAR_H + 34
 for i, row in enumerate(ROWS):
     kind = row[0]
     if kind == "gap":
-        y += LINE_H * 0.5
+        y += LINE_H * 0.4
         continue
     if kind == "host":
-        inner = (f'<text x="{KEY_X}" y="{y:.1f}" font-size="14" font-weight="700">'
+        inner = (f'<text x="{KEY_X}" y="{y:.1f}" font-size="14.5" font-weight="700">'
                  f'<tspan fill="{GREEN}">virendra</tspan><tspan fill="{MUTED}">@</tspan>'
                  f'<tspan fill="{ACCENT}">github</tspan></text>'
-                 f'<line x1="{KEY_X+96}" y1="{y-4:.1f}" x2="{W-PAD}" y2="{y-4:.1f}" '
-                 f'stroke="{FRAME}" stroke-opacity="0.8"/>')
+                 f'<rect x="{KEY_X+142}" y="{y-4:.1f}" width="{W-PAD-(KEY_X+142)}" height="1.5" fill="url(#hostGrad)"/>')
     elif kind == "sec":
         title = esc(row[1])
-        inner = (f'<text x="{KEY_X}" y="{y:.1f}" fill="{SECTION}" font-size="12.5" font-weight="700">'
-                 f'&#8212; {title}</text>'
-                 f'<line x1="{KEY_X + 12 + len(row[1])*8}" y1="{y-4:.1f}" x2="{W-PAD}" y2="{y-4:.1f}" '
-                 f'stroke="{FRAME}" stroke-opacity="0.8"/>')
+        inner = (f'<text x="{KEY_X}" y="{y:.1f}" fill="{SECTION}" font-size="13" font-weight="700">'
+                 f'{title}</text>'
+                 f'<rect x="{KEY_X + len(row[1])*8.5 + 8}" y="{y-4:.1f}" width="{W-PAD-(KEY_X + len(row[1])*8.5 + 8)}" height="1.5" fill="url(#lineGrad)"/>')
     elif kind == "kv":
         key, val = esc(row[1]), esc(row[2])
-        inner = (f'<text x="{KEY_X}" y="{y:.1f}" fill="{KEY}" font-size="12.5" font-weight="700">{key}</text>'
-                 f'<text x="{VAL_X}" y="{y:.1f}" fill="{INK}" font-size="12.5">{val}</text>')
+        if key in ["Lang", "Frontend", "Backend", "DB", "BaaS"]:
+            inner_parts = [f'<text x="{KEY_X}" y="{y:.1f}" fill="{KEY}" font-size="12.5" font-weight="700">{key}</text>']
+            current_x = VAL_X
+            for tag in val.split(","):
+                tag = tag.strip()
+                tag_w = len(tag) * 7.5 + 14  
+                inner_parts.append(f'<rect x="{current_x}" y="{y-12}" width="{tag_w}" height="18" rx="4" fill="#161b22" stroke="{SECTION}" stroke-opacity="0.3"/>')
+                inner_parts.append(f'<text x="{current_x+7}" y="{y+1:.1f}" fill="{INK}" font-size="11.5">{tag}</text>')
+                current_x += tag_w + 6
+            inner = "".join(inner_parts)
+        else:
+            inner = (f'<text x="{KEY_X}" y="{y:.1f}" fill="{KEY}" font-size="12.5" font-weight="700">{key}</text>'
+                     f'<text x="{VAL_X}" y="{y:.1f}" fill="{INK}" font-size="12.5">{val}</text>')
     elif kind == "bul":
         txt = esc(row[1])
-        inner = (f'<circle cx="{KEY_X+3}" cy="{y-4:.1f}" r="2.5" fill="{GREEN}"/>'
-                 f'<text x="{KEY_X+14}" y="{y:.1f}" fill="{INK}" font-size="12.5">{txt}</text>')
+        chevron = f'<path d="M {KEY_X+2} {y-9} L {KEY_X+7} {y-4} L {KEY_X+2} {y+1}" stroke="{ACCENT}" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
+        inner = (chevron + f'<text x="{KEY_X+16}" y="{y:.1f}" fill="{INK}" font-size="12.5">{txt}</text>')
     else:
         continue
     parts.append(rise(inner, i))
@@ -122,3 +132,4 @@ svg = "".join(parts)
 with open(OUT, "w") as f:
     f.write(svg)
 print("wrote", OUT, len(svg), "bytes;", W, "x", H, "content_bottom", round(y))
+
