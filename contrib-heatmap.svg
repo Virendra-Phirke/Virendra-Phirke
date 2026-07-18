@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="869" height="265" viewBox="0 0 869 265" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"><style>
 @keyframes fadeOutView {
   0%, 90% { opacity: 1; }
-  100% { opacity: 0; visibility: hidden; }
+  100% { opacity: 0; }
 }
 @keyframes fadeInView {
   0%, 90% { opacity: 0; }
-  100% { opacity: 1; visibility: visible; }
+  100% { opacity: 1; }
 }
 #heatmap-view { animation: fadeOutView 5.5s forwards; }
 #bomberman-view { animation: fadeInView 5.5s forwards; opacity: 0; }
