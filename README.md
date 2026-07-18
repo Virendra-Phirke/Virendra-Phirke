@@ -37,7 +37,12 @@
 <br>
 <br>
 
-<img src="./stats-card.svg" width="950" alt="Virendra's GitHub Stats & Most Used Languages" />
+<table>
+<tr>
+<td valign="top"><a href="https://www.readmecodegen.com/custom-github-card-generator"><img src="https://www.readmecodegen.com/api/github-stats/svg?username=virendra-phirke" alt="GitHub Stats" /></a></td>
+<td valign="top"><img src="./lang-card.svg" width="460" alt="Virendra's Most Used Languages" /></td>
+</tr>
+</table>
 
 <br>
 <br>
