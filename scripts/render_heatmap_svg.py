@@ -108,15 +108,15 @@ def render(data):
         f'viewBox="0 0 {canvas_w} {canvas_h}" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">',
         f'<style>{css}\n'
         f'@keyframes fadeOutView {{\n'
-        f'  0%, 90% {{ opacity: 1; }}\n'
+        f'  0%, 75% {{ opacity: 1; }}\n'
         f'  100% {{ opacity: 0; }}\n'
         f'}}\n'
         f'@keyframes fadeInView {{\n'
-        f'  0%, 90% {{ opacity: 0; }}\n'
+        f'  0%, 75% {{ opacity: 0; }}\n'
         f'  100% {{ opacity: 1; }}\n'
         f'}}\n'
-        f'#heatmap-view {{ animation: fadeOutView 5.5s forwards; }}\n'
-        f'#bomberman-view {{ animation: fadeInView 5.5s forwards; opacity: 0; }}\n'
+        f'#heatmap-view {{ animation: fadeOutView 7.0s forwards; }}\n'
+        f'#bomberman-view {{ animation: fadeInView 7.0s forwards; opacity: 0; }}\n'
         f'</style>',
         '<defs>'
         f'<linearGradient id="hbg" x1="0" y1="0" x2="0" y2="1">'
@@ -135,8 +135,6 @@ def render(data):
     grid_top = TITLEBAR_H + TOP_LABEL_H
     grid_left = PAD + LEFT_LABEL_W
 
-    parts.append('<g id="heatmap-view">')
-
     for ci, label in month_labels:
         x = grid_left + ci * STEP
         parts.append(f'<text x="{x}" y="{TITLEBAR_H + 14}" fill="{MUTED}" font-size="10">{label}</text>')
@@ -144,6 +142,8 @@ def render(data):
     for wi, wname in [(1, "Mon"), (3, "Wed"), (5, "Fri")]:
         y = grid_top + wi * STEP + CELL * 0.78
         parts.append(f'<text x="{PAD}" y="{y:.1f}" fill="{MUTED}" font-size="9">{wname}</text>')
+
+    parts.append('<g id="heatmap-view">')
 
     # the boxes -- each a rounded rect, diagonal slide-down reveal (once, freeze)
     for ci, column in enumerate(grid):
@@ -185,8 +185,11 @@ def render(data):
             match = re.search(r'<svg[^>]*>(.*)</svg>', bm_content, re.DOTALL | re.IGNORECASE)
             if match:
                 inner_bm = match.group(1)
+                inner_bm = re.sub(r'<rect width="100%" height="100%"[^>]*>', '', inner_bm)
                 scale = art_w / 1166.0
-                parts.append(f'<g id="bomberman-view" transform="translate({grid_left}, {grid_top + 10}) scale({scale})">')
+                bx = grid_left - 0.818
+                by = grid_top - 11.045
+                parts.append(f'<g id="bomberman-view" transform="translate({bx:.3f}, {by:.3f}) scale({scale:.5f})">')
                 parts.append(inner_bm)
                 parts.append('</g>')
 

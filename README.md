@@ -9,7 +9,7 @@
 
 <h3><code>virendra@github ~ $ ./contributions.sh</code></h3>
 
-<img src="./contrib-heatmap.svg" width="860" alt="Virendra's GitHub contribution graph — auto-refreshed daily" />
+<img src="./contrib-heatmap.svg?v=1" width="860" alt="Virendra's GitHub contribution graph — auto-refreshed daily" />
 
 <br>
 <br>
