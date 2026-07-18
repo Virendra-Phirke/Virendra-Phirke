@@ -186,6 +186,7 @@ def render(data):
             if match:
                 inner_bm = match.group(1)
                 inner_bm = re.sub(r'<rect width="100%" height="100%"[^>]*>', '', inner_bm)
+                inner_bm = re.sub(r'<text[\s\S]*?</text>', '', inner_bm)
                 scale = art_w / 1166.0
                 bx = grid_left - 0.818
                 by = grid_top - 11.045
