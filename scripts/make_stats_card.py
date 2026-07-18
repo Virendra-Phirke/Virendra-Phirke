@@ -193,7 +193,7 @@ def render_stats_card(stats, x_off):
 
 
 def render_lang_card(languages, x_off):
-    """Render the right Most Used Languages card."""
+    """Render the right Most Used Languages card with a donut chart."""
     parts = []
     # Card background
     parts.append(f'<rect x="{x_off}" y="0" width="{CARD_W}" height="{CARD_H}" rx="12" fill="url(#sbg)"/>')
@@ -207,30 +207,52 @@ def render_lang_card(languages, x_off):
     # Title
     parts.append(f'<text x="{x_off+CARD_W/2}" y="{TITLEBAR_H/2+4}" fill="{GRAY}" font-size="11" text-anchor="middle">Most Used Languages</text>')
 
-    # Language bars
-    bar_left = x_off + PAD
-    bar_w = CARD_W - PAD * 2 - 60  # leave room for percentage
-    y = TITLEBAR_H + 38
-
+    # Pie chart variables
+    R = 60
+    import math
+    C = 2 * math.pi * R
+    cx = x_off + 120
+    cy = TITLEBAR_H + 105
+    
+    cumulative_pct = 0
+    pie_parts = []
+    label_parts = []
+    
+    # Background ring for the donut
+    pie_parts.append(f'<circle cx="{cx}" cy="{cy}" r="{R}" fill="transparent" stroke="{FRAME}" stroke-width="30" opacity="0.4"/>')
+    
+    label_x = x_off + 250
+    label_y = TITLEBAR_H + 40
+    
     for idx, (lang, pct) in enumerate(languages):
-        delay = 0.3 + idx * 0.12
         color = LANG_COLORS.get(lang, "#8b8b8b")
-        filled_w = max(4, bar_w * pct / 100)
-
-        row_inner = (
-            # Language name
-            f'<text x="{bar_left}" y="{y}" fill="{color}" font-size="12" font-weight="700">{html.escape(lang)}</text>'
-            # Percentage
-            f'<text x="{x_off+CARD_W-PAD}" y="{y}" fill="{TEXT}" font-size="12" font-weight="600" text-anchor="end">{pct}%</text>'
-            # Bar background
-            f'<rect x="{bar_left}" y="{y+5}" width="{bar_w}" height="7" rx="3.5" fill="{GRAY}" opacity="0.25"/>'
-            # Bar filled
-            f'<rect x="{bar_left}" y="{y+5}" width="{filled_w}" height="7" rx="3.5" fill="{color}"/>'
+        dash_length = (pct / 100.0) * C
+        dash_offset = C - (cumulative_pct / 100.0) * C
+        
+        delay = 0.3 + idx * 0.15
+        
+        # Donut segment
+        slice_inner = (
+            f'<circle cx="{cx}" cy="{cy}" r="{R}" fill="transparent" stroke="{color}" stroke-width="30" '
+            f'stroke-dasharray="0 {C}" stroke-dashoffset="{dash_offset}" transform="rotate(-90 {cx} {cy})">'
+            f'<animate attributeName="stroke-dasharray" from="0 {C}" to="{dash_length} {C}" '
+            f'begin="{delay:.2f}s" dur="0.8s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.2 1"/>'
+            f'</circle>'
         )
-        parts.append(rise(row_inner, delay))
-        y += 33
+        pie_parts.append(slice_inner)
+        
+        # Label on the right
+        label_inner = (
+            f'<circle cx="{label_x}" cy="{label_y-4}" r="5" fill="{color}"/>'
+            f'<text x="{label_x + 15}" y="{label_y}" fill="{color}" font-size="13" font-weight="700">{html.escape(lang)}</text>'
+            f'<text x="{x_off+CARD_W-PAD}" y="{label_y}" fill="{TEXT}" font-size="13" font-weight="600" text-anchor="end">{pct}%</text>'
+        )
+        label_parts.append(rise(label_inner, delay))
+        
+        cumulative_pct += pct
+        label_y += 30
 
-    return "\n".join(parts)
+    return "\n".join(parts + pie_parts + label_parts)
 
 
 def build_svg(stats, languages):
