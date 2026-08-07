@@ -44,11 +44,6 @@
 </tr>
 </table>
 
-<br>
-
-<div align="center">
-<a href="https://www.readmecodegen.com/custom-github-card-generator"><img src="https://www.readmecodegen.com/api/github-stats/svg?username=virendra-phirke&cardType=streak" alt="GitHub Streak" /></a>
-</div>
 
 
 </div>
