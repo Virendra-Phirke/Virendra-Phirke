@@ -1,11 +1,9 @@
 name: Update profile art
 
-# Refreshes the contribution graph SVG daily from real data.
-# Runs daily, plus whenever you push to main, plus on-demand.
 
 "on":
   schedule:
-    - cron: "0 */6 * * *"   # Run every 6 hours
+    - cron: "0 * * * *"   # Check every hour
   workflow_dispatch: {}
   push:
     branches: [main]
@@ -16,37 +14,68 @@ permissions:
 jobs:
   heatmap:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
+  
+      - name: Random update chance
+        id: random
+        run: |
+          RANDOM_NUMBER=$((RANDOM % 100 + 1))
+
+          echo "Random number: $RANDOM_NUMBER"
+
+          # 15% chance of updating
+          if [ "$RANDOM_NUMBER" -le 15 ]; then
+            echo "update=true" >> "$GITHUB_OUTPUT"
+            echo "🎲 Update selected"
+          else
+            echo "update=false" >> "$GITHUB_OUTPUT"
+            echo "⏭️ Skipping this run"
+          fi
+
+      - name: Check update decision
+        if: steps.random.outputs.update != 'true'
+        run: |
+          echo "No profile update this time."
+          exit 0
+
       - uses: actions/setup-python@v5
+        if: steps.random.outputs.update == 'true'
         with:
           python-version: "3.11"
 
       - name: Install dependencies
+        if: steps.random.outputs.update == 'true'
         run: pip install -r scripts/requirements.txt
 
-      - name: Scrape real contribution data (no auth needed)
+      - name: Scrape real contribution data
+        if: steps.random.outputs.update == 'true'
         run: python scripts/fetch_contributions.py
 
       - name: Pick random game
+        if: steps.random.outputs.update == 'true'
         id: pick_game
         run: |
           python -c "import random, os; game = random.choice(['bomberman', 'minesweeper', 'puzzle-bobble', 'galaga', 'breakout', 'pacman']); print(f'game={game}'); f = open(os.environ['GITHUB_OUTPUT'], 'a'); f.write(f'game={game}\n'); f.close()"
 
       - name: Generate random game contribution graph SVG
+        if: steps.random.outputs.update == 'true'
         uses: abozanona/pacman-contribution-graph@main
         with:
           github_user_name: ${{ github.repository_owner }}
           games: ${{ steps.pick_game.outputs.game }}
 
       - name: Render animated contribution graph SVG
+        if: steps.random.outputs.update == 'true'
         env:
           CHOSEN_GAME: ${{ steps.pick_game.outputs.game }}
         run: |
           python scripts/render_heatmap_svg.py
 
       - name: Commit updated art
+        if: steps.random.outputs.update == 'true'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: refresh contribution graph [skip ci]"
