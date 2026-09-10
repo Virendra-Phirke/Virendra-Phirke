@@ -30,7 +30,7 @@
 
 <p><b>Fullstack Developer</b></p>
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-virendraphirke-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/virendraphirke)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-virendraphirke-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://in.linkedin.com/in/virendra-phirke-77294a424)
 [![Instagram](https://img.shields.io/badge/Instagram-virendra__phirke-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/virendra_phirke)
 [![GitHub](https://img.shields.io/badge/GitHub-virendra--phirke-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/virendra-phirke)
 
